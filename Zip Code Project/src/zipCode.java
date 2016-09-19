@@ -92,7 +92,6 @@ public class zipCode
 			return "ERROR - invalid check digit!";
 		}
 		
-		
 	}
 	
 	/**
@@ -182,6 +181,7 @@ public class zipCode
 	 */
 	public static String[] getCities(String zipCode, File cities) throws FileNotFoundException 
 	{
+		//Checking that the zipcode was valid
 		if (zipCode.indexOf("ERROR") != -1) 
 		{ 
 			String[] error = {"No Location Found"};
@@ -189,6 +189,7 @@ public class zipCode
 		}
 		else
 		{
+			//Calculating the number of cities with the same zipcode
 			Scanner cityReader = new Scanner(cities); 
 			int numCities = 0;  
 			while (cityReader.hasNextLine())
@@ -201,8 +202,11 @@ public class zipCode
 					numCities++; 
 				}
 			}
-				
-			String[] sameZipCities = new String[numCities]; 			
+			
+			//creating an array to hold all the cities with the same zipcode
+			String[] sameZipCities = new String[numCities]; 
+			
+			//filling the above array
 			Scanner cityChecker = new Scanner(cities); 
 			int index = 0; 
 			while (index < numCities) 
@@ -224,25 +228,38 @@ public class zipCode
 		}
 	}
 	
+	/**
+	 * Prints the correct type of barcode. 
+	 * Pre: must have created the barcode.
+	 * Post: prints barcodes.
+	 * @param barcode - the barcode
+	 * @param readable - whether it is readable or not 
+	 */
 	public static void printBarcode(String[] barcode, boolean readable)
 	{
 		if (readable == true)
 		{
 			for (int i = 0; i < barcode.length; i++) 
 			{
-				System.out.print(barcode[i]+"  ");
+				System.out.print(barcode[i]+"\t"); //with tabs
 			}
 		}
-		else 
+		else //postable
 		{
 			for (int i = 0; i < barcode.length; i++)
 			{
-				System.out.print(barcode[i]);
+				System.out.print(barcode[i]); //no tabs
 			}
 		}
 		
 	}
 	
+	/**
+	 * Prints out barcodes.
+	 * Pre: must have zipcode.
+	 * Post: prints out barcodes.
+	 * @param zipCode - the zipcode
+	 */
 	public static void printBarcodes(String zipCode)
 	{
 		//print zipcode & barcodes 
@@ -255,6 +272,12 @@ public class zipCode
 		System.out.println(); 
 	}
 	
+	/**
+	 * Prints all cities with the same zip code as the current zip code.
+	 * Pre: must have found the cities.
+	 * Post: prints out all the cities.
+	 * @param cities - array that contains all the cities. 
+	 */
 	public static void printCities(String[] cities) 
 	{
 		for (int k = 0; k < cities.length; k++) 
@@ -265,36 +288,48 @@ public class zipCode
 	
 	public static void main(String[] args) throws FileNotFoundException 
 	{
+		//initiliazing files & scanners 
 		File zipCodes = new File("src/ZipCodes.txt"); 
 		File cities = new File("src/ZipCodesCity.txt"); 
 		File barCodes = new File("src/ZipBarCodes.txt"); 
 		Scanner reader = new Scanner(zipCodes); 
+		Scanner barcodeReader = new Scanner(barCodes); 
 		String zipCode = "";
 		
+		//Option 1 & 2
 		System.out.println("OPTION 1 & 2");
+		//reading whole file
 		while (reader.hasNext())
 		{	
-			//obtain city data 
+			//obtain zipcode
 			zipCode = reader.next();  
 			
+			//get all cities with same zip code
 			String[] citiesWithSameZip = getCities(zipCode, cities); 
 			
+			//print cities & barcode
 			printCities(citiesWithSameZip); 
 			printBarcodes(zipCode);
 			
 			System.out.println(); 
 		}
 		
+		//Option 3
 		System.out.println("OPTION 3");
-		Scanner barcodeReader = new Scanner(barCodes); 
+		//reading the whole file
 		while (barcodeReader.hasNext()) 
 		{ 
+			//get barcode
 			String barcode = barcodeReader.next(); 
+			
+			//create zipcode and print out zipcode and bar code
 			String zip = createZipCode(barcode); 
 			System.out.println(barcode+" ---> "+zip); 
 			
+			//get cities with the same zipcode and print out all cities
 			String[] citiesWithSameZip = getCities(zip, cities);
 			printCities(citiesWithSameZip);
+			
 			System.out.println(); 
 		}
 	}
