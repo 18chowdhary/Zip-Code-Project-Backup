@@ -1,3 +1,11 @@
+/**
+ * Zip Code Project - Shreya Chowdhary
+ * This class runs a program that reads in a file of barcodes and converts the barcodes into zipcodes, finding all cities that match with these zipcodes. 
+ * The program also reads a file of zipcodes and finds cities that match with the zipcode. 
+ * 
+ * Started: 09/14/16 
+ * Finished: 09/19/16
+ */
 import java.util.Scanner; 
 import java.io.File;
 import java.io.FileNotFoundException;
