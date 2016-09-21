@@ -110,36 +110,27 @@ public class zipCode
 	 */
 	public static String[] createBarcode(String zipCode) 
 	{
-		String[] barcode = new String[8];
-		
-		//start and end frames
-		barcode[0] = "|";
-		barcode[7] = "|"; 
+		String[] barcode = new String[6];
 		
 		int digSum = 0; //keeping track of the sum of the digits
 		
 		//Creating zipcode - fill the characters inside the frames 
-		int barcodeIndex = 1; 
-		for (int j = 1; j < 6; j++)
+		//parse through zipcode to convert each digit into its corresponding encoding
+		for (int i = 0; i < zipCode.length(); i++)
 		{
-			//parse through zipcode to convert each digit into its corresponding encoding
-			for (int i = 0; i < zipCode.length(); i++)
-			{
-				//convert the digit into an integer 
-				char digit = zipCode.charAt(i); 
-				String dig = Character.toString(digit); 
-				int digNum = Integer.parseInt(dig); 
+			//convert the digit into an integer 
+			char digit = zipCode.charAt(i); 
+			String dig = Character.toString(digit); 
+			int digNum = Integer.parseInt(dig); 				
+			//add to sum
+			digSum += digNum; 
 				
-				//add to sum
-				digSum += digNum; 
-				
-				//get correcting encoding for digit
-				barcode[j] = getBarcodeEncoding(digNum); 
-			}
+			//get correcting encoding for digit
+			barcode[i] = getBarcodeEncoding(digNum); 
 		}
 		
 		//get check digit
-		barcode[6] = getBarcodeEncoding(getCheckDigit(digSum)); 
+		barcode[5] = getBarcodeEncoding(getCheckDigit(digSum)); 
 		
 		return barcode; 
 	}
@@ -245,20 +236,26 @@ public class zipCode
 	 */
 	public static void printBarcode(String[] barcode, boolean readable)
 	{
+		String printedBarcode = ""; 
 		if (readable == true)
-		{
+		{	
+			printedBarcode = "|\t"; 
 			for (int i = 0; i < barcode.length; i++) 
 			{
-				System.out.print(barcode[i]+"\t"); //with tabs
+				printedBarcode += barcode[i]+"\t"; 
 			}
 		}
 		else //postable
 		{
+			printedBarcode = "|"; 
 			for (int i = 0; i < barcode.length; i++)
 			{
-				System.out.print(barcode[i]); //no tabs
+				printedBarcode += barcode[i]; 
 			}
 		}
+		
+		printedBarcode += "|"; 
+		System.out.print(printedBarcode);
 		
 	}
 	
