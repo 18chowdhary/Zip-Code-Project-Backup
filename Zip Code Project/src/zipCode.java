@@ -81,8 +81,7 @@ public class zipCode
 		for (int i = 0; i < zipCode.length(); i++)
 		{
 			//converting the current character of the zipcode into an integer 
-			char dig = zipCode.charAt(i); 
-			String digit = Character.toString(dig); 
+			String digit = zipCode.substring(i,  i+1); 
 			int digitValue = Integer.parseInt(digit); 
 			
 			//adding it to the sum of the digits 
@@ -119,9 +118,8 @@ public class zipCode
 		for (int i = 0; i < zipCode.length(); i++)
 		{
 			//convert the digit into an integer 
-			char digit = zipCode.charAt(i); 
-			String dig = Character.toString(digit); 
-			int digNum = Integer.parseInt(dig); 				
+			String digit = zipCode.substring(i, i+1);
+			int digNum = Integer.parseInt(digit); 				
 			//add to sum
 			digSum += digNum; 
 				
